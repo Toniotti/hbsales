@@ -2,6 +2,8 @@ package br.com.hbsis.crud.fornecedor;
 
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class FornecedorService {
     private final FornecedorRepository fornecedorRepository;
@@ -10,15 +12,14 @@ public class FornecedorService {
         this.fornecedorRepository = fornecedorRepository;
     }
 
+    //cadastro
     public FornecedorDTO save(FornecedorDTO fornecedorDTO) {
-
-        this.validate(fornecedorDTO);
-
         Fornecedor fornecedor = new Fornecedor();
         fornecedor.setCnpj(fornecedorDTO.getCnpj());
         fornecedor.setEmail(fornecedorDTO.getEmail());
-        fornecedor.setNome_fantasia(fornecedorDTO.getNome_fantasia());
-        fornecedor.setRazao_social(fornecedorDTO.getRazao_social());
+
+        fornecedor.setNomeFantasia(fornecedorDTO.getNomeFantasia());
+        fornecedor.setRazaoSocial(fornecedorDTO.getRazaoSocial());
         fornecedor.setTelefone(fornecedorDTO.getTelefone());
 
         fornecedor = this.fornecedorRepository.save(fornecedor); //
@@ -26,24 +27,39 @@ public class FornecedorService {
         return FornecedorDTO.of(fornecedor);
     }
 
-    private void validate(FornecedorDTO fornecedorDTO){
-        if(fornecedorDTO == null){
-            throw new IllegalArgumentException("FuncionarioDTO não deve ser nulo");
+    //listagem
+    public FornecedorDTO findById(Long id) {
+        Optional<Fornecedor> fornecedorOptional = this.fornecedorRepository.findById(id);
+
+        if (fornecedorOptional.isPresent()) {
+            return FornecedorDTO.of(fornecedorOptional.get());
         }
-        if(fornecedorDTO.getCnpj().equals("")){
-            throw new IllegalArgumentException("CNPJ não deve ser vazio");
+
+        throw new IllegalArgumentException(String.format("ID %s não existe", id));
+    }
+
+    //update
+    public FornecedorDTO update(FornecedorDTO fornecedorDTO, Long id) {
+        Optional<Fornecedor> fornecedorOptional = this.fornecedorRepository.findById(id);
+
+        if (fornecedorOptional.isPresent()) {
+            Fornecedor fornecedorExistente = fornecedorOptional.get();
+
+            fornecedorExistente.setTelefone(fornecedorDTO.getTelefone());
+            fornecedorExistente.setRazaoSocial(fornecedorDTO.getRazaoSocial());
+            fornecedorExistente.setNomeFantasia(fornecedorDTO.getNomeFantasia());
+            fornecedorExistente.setEmail(fornecedorDTO.getEmail());
+            fornecedorExistente.setCnpj(fornecedorDTO.getCnpj());
+
+            fornecedorExistente = this.fornecedorRepository.save(fornecedorExistente);
+
+            return FornecedorDTO.of(fornecedorExistente);
         }
-        if(fornecedorDTO.getEmail().equals("")){
-            throw new IllegalArgumentException("Email não deve ser vazio");
-        }
-        if(fornecedorDTO.getNome_fantasia().equals("")){
-            throw new IllegalArgumentException("Nome fantasia não deve ser vazio");
-        }
-        if(fornecedorDTO.getRazao_social().equals("")){
-            throw new IllegalArgumentException("Razao social não deve ser vazio");
-        }
-        if(fornecedorDTO.getTelefone().equals("")){
-            throw new IllegalArgumentException("Telefone não deve ser vazio");
-        }
+        throw new IllegalArgumentException(String.format("ID %s não existe", id));
+    }
+
+    //delete
+    public void delete(Long id){
+        this.fornecedorRepository.deleteById(id);
     }
 }

@@ -8,6 +8,10 @@ public class FornecedorDTO {
     private String telefone;
     private String email;
 
+    public void FornecedorDTO(){
+
+    }
+
 
     public FornecedorDTO(Long id, String razao_social, String cnpj, String nome_fantasia, String telefone, String email) {
         this.id = id;
@@ -20,9 +24,9 @@ public class FornecedorDTO {
 
     public static FornecedorDTO of(Fornecedor fornecedor) {
         return new FornecedorDTO(fornecedor.getId(),
-                fornecedor.getRazao_social(),
+                fornecedor.getRazaoSocial(),
                 fornecedor.getCnpj(),
-                fornecedor.getNome_fantasia(),
+                fornecedor.getNomeFantasia(),
                 fornecedor.getTelefone(),
                 fornecedor.getEmail());
     }
@@ -35,11 +39,11 @@ public class FornecedorDTO {
         this.id = id;
     }
 
-    public String getRazao_social() {
+    public String getRazaoSocial() {
         return razao_social;
     }
 
-    public void setRazao_social(String razao_social) {
+    public void setRazaoSocial(String razao_social) {
         this.razao_social = razao_social;
     }
 
@@ -51,11 +55,11 @@ public class FornecedorDTO {
         this.cnpj = cnpj;
     }
 
-    public String getNome_fantasia() {
+    public String getNomeFantasia() {
         return nome_fantasia;
     }
 
-    public void setNome_fantasia(String nome_fantasia) {
+    public void setNomeFantasia(String nome_fantasia) {
         this.nome_fantasia = nome_fantasia;
     }
 
