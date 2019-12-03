@@ -8,32 +8,33 @@ public class Fornecedor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id_fornecedor")
+    private int idFornecedor;
     @Column(name = "razao_social", unique = true, nullable = false, length = 80)
-    private String razao_social;
+    private String razaoSocial;
     @Column(name = "cnpj", unique = true, nullable = false, length = 14)
     private String cnpj;
     @Column(name = "nome_fantasia", unique = false, nullable = false, length = 80)
-    private String nome_fantasia;
+    private String nomeFantasia;
     @Column(name = "telefone", unique = true, nullable = false, length = 14)
     private String telefone;
     @Column(name = "email", unique = false, nullable = false, length = 80)
     private String email;
 
-    public Long getId() {
-        return id;
+    public int getIdFornecedor() {
+        return idFornecedor;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIdFornecedor(int id) {
+        this.idFornecedor = id;
     }
 
     public String getRazaoSocial() {
-        return razao_social;
+        return razaoSocial;
     }
 
-    public void setRazaoSocial(String razao_social) {
-        this.razao_social = razao_social;
+    public void setRazaoSocial(String razaoSocial) {
+        this.razaoSocial = razaoSocial;
     }
 
     public String getCnpj() {
@@ -45,11 +46,11 @@ public class Fornecedor {
     }
 
     public String getNomeFantasia() {
-        return nome_fantasia;
+        return nomeFantasia;
     }
 
-    public void setNomeFantasia(String nome_fantasia) {
-        this.nome_fantasia = nome_fantasia;
+    public void setNomeFantasia(String nomeFantasia) {
+        this.nomeFantasia = nomeFantasia;
     }
 
     public String getTelefone() {

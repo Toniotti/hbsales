@@ -18,17 +18,17 @@ public class FornecedorRest {
     }
 
     @GetMapping("/{id}")
-    public FornecedorDTO find(@PathVariable("id") Long id){
+    public FornecedorDTO find(@PathVariable("id") int id){
         return this.fornecedorService.findById(id);
     }
 
     @PutMapping("/{id}")
-    public FornecedorDTO update(@PathVariable("id") Long id, @RequestBody FornecedorDTO fornecedorDTO){
+    public FornecedorDTO update(@PathVariable("id") int id, @RequestBody FornecedorDTO fornecedorDTO){
         return this.fornecedorService.update(fornecedorDTO, id);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Long id){
+    public void delete(@PathVariable("id") int id){
         this.fornecedorService.delete(id);
     }
 

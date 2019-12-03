@@ -1,10 +1,10 @@
 package br.com.hbsis.crud.fornecedor;
 
 public class FornecedorDTO {
-    private Long id;
-    private String razao_social;
+    private int id;
+    private String razaoSocial;
     private String cnpj;
-    private String nome_fantasia;
+    private String nomeFantasia;
     private String telefone;
     private String email;
 
@@ -13,17 +13,17 @@ public class FornecedorDTO {
     }
 
 
-    public FornecedorDTO(Long id, String razao_social, String cnpj, String nome_fantasia, String telefone, String email) {
+    public FornecedorDTO(int id, String razaoSocial, String cnpj, String nomeFantasia, String telefone, String email) {
         this.id = id;
-        this.razao_social = razao_social;
+        this.razaoSocial = razaoSocial;
         this.cnpj = cnpj;
-        this.nome_fantasia = nome_fantasia;
+        this.nomeFantasia = nomeFantasia;
         this.telefone = telefone;
         this.email = email;
     }
 
     public static FornecedorDTO of(Fornecedor fornecedor) {
-        return new FornecedorDTO(fornecedor.getId(),
+        return new FornecedorDTO(fornecedor.getIdFornecedor(),
                 fornecedor.getRazaoSocial(),
                 fornecedor.getCnpj(),
                 fornecedor.getNomeFantasia(),
@@ -31,20 +31,20 @@ public class FornecedorDTO {
                 fornecedor.getEmail());
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
     public String getRazaoSocial() {
-        return razao_social;
+        return razaoSocial;
     }
 
-    public void setRazaoSocial(String razao_social) {
-        this.razao_social = razao_social;
+    public void setRazaoSocial(String razaoSocial) {
+        this.razaoSocial = razaoSocial;
     }
 
     public String getCnpj() {
@@ -56,11 +56,11 @@ public class FornecedorDTO {
     }
 
     public String getNomeFantasia() {
-        return nome_fantasia;
+        return nomeFantasia;
     }
 
-    public void setNomeFantasia(String nome_fantasia) {
-        this.nome_fantasia = nome_fantasia;
+    public void setNomeFantasia(String nomeFantasia) {
+        this.nomeFantasia = nomeFantasia;
     }
 
     public String getTelefone() {
