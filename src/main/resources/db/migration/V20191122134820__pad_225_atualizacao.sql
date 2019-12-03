@@ -1,0 +1,1 @@
+alter table fornecedores alter column id BIGINT;

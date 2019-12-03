@@ -4,10 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class HbsalesApplication {
+public class CrudApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(HbsalesApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.run(CrudApplication.class, args);
+    }
 }
