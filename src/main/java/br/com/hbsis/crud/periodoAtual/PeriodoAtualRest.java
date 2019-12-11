@@ -20,7 +20,7 @@ public class PeriodoAtualRest {
 
     //salvar
     @PostMapping
-    public PeriodoAtualDTO save(@RequestBody PeriodoAtualDTO periodoAtualDTO){
+    public PeriodoAtual save(@RequestBody PeriodoAtualDTO periodoAtualDTO){
         return this.periodoAtualServices.save(periodoAtualDTO);
     }
 
@@ -40,7 +40,7 @@ public class PeriodoAtualRest {
     //atualizar
 
     @PutMapping("/{id}")
-    public PeriodoAtualDTO update(@RequestBody PeriodoAtualDTO periodoAtualDTO, @PathVariable int id){
+    public PeriodoAtual update(@RequestBody PeriodoAtualDTO periodoAtualDTO, @PathVariable int id){
         return this.periodoAtualServices.update(periodoAtualDTO, id);
     }
 
@@ -52,8 +52,8 @@ public class PeriodoAtualRest {
     }
 
     //exportar
-    @GetMapping("/export/{id}")
-    public void export(@PathVariable("id") int id, HttpServletResponse response) throws IOException {
-        this.periodoAtualServices.exportPeriodoFornecedor(response, id);
-    }
+//    @GetMapping("/export/{id}")
+//    public void export(@PathVariable("id") int id, HttpServletResponse response) throws IOException {
+//        this.periodoAtualServices.exportPeriodoFornecedor(response, id);
+//    }
 }

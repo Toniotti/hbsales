@@ -3,6 +3,8 @@ package br.com.hbsis.crud.fornecedor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/fornecedores")
 public class FornecedorRest {
@@ -13,7 +15,7 @@ public class FornecedorRest {
     public FornecedorRest(FornecedorService fornecedorService){this.fornecedorService = fornecedorService;}
 
     @PostMapping
-    public FornecedorDTO save(@RequestBody FornecedorDTO fornecedorDTO){
+    public Fornecedor save(@Valid @RequestBody FornecedorDTO fornecedorDTO){
         return this.fornecedorService.save(fornecedorDTO);
     }
 
@@ -23,7 +25,7 @@ public class FornecedorRest {
     }
 
     @PutMapping("/{id}")
-    public FornecedorDTO update(@PathVariable("id") int id, @RequestBody FornecedorDTO fornecedorDTO){
+    public FornecedorDTO update(@PathVariable("id") int id, @Valid @RequestBody FornecedorDTO fornecedorDTO){
         return this.fornecedorService.update(fornecedorDTO, id);
     }
 

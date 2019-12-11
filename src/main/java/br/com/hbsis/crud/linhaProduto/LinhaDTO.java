@@ -1,27 +1,49 @@
 package br.com.hbsis.crud.linhaProduto;
 
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 public class LinhaDTO {
     private int idLinha;
-    private String nome;
-    private int categoria;
+    @NotNull(message = "O campo da linha não pode ser nulo.")
+    private int fkCategoria;
+    @NotBlank(message = "O nome da linha não pode estar em branco.")
+    @NotNull(message = "O nome da linha não pode ser nulo.")
+    @Size(max = 50, message = "O nome da linha não pode conter mais de 50 caracteres.")
+    private String nomeLinha;
+    @NotBlank(message = "O codigo da linha não pode estar em branco")
+    @NotNull(message = "O codigo da linha não pode ser nulo.")
+    @Pattern(regexp = "[A-Za-z0-9]{0,10}", message = "O código não atende o padrão esperado.")
+    private String codigoLinha;
 
-
-    public LinhaDTO(){
-
+    public LinhaDTO() {
     }
 
-    public LinhaDTO(int id, String nome, int categoria){
-        this.idLinha = id;
-        this.nome = nome;
-        this.categoria = categoria;
+    public LinhaDTO(int idLinha, int fkCategoria, String nomeCategoria, String codigoCategoria) {
+        this.idLinha = idLinha;
+        this.fkCategoria = fkCategoria;
+        this.nomeLinha = nomeCategoria;
+        this.codigoLinha = codigoCategoria;
+    }
+
+    public LinhaDTO(int fkCategoria, String nomeCategoria, String codigoCategoria) {
+        this.fkCategoria = fkCategoria;
+        this.nomeLinha = nomeCategoria;
+        this.codigoLinha = codigoCategoria;
     }
 
     public static LinhaDTO of(Linha linha){
-        return new LinhaDTO(
+        LinhaDTO linhaDTO = new LinhaDTO(
                 linha.getIdLinha(),
+                linha.getCategoria().getIdCategoria(),
                 linha.getNomeLinha(),
-                linha.getCategoria().getIdCategoria());
+                linha.getCodigoLinha()
+        );
+
+        return linhaDTO;
     }
 
     public int getIdLinha() {
@@ -32,19 +54,27 @@ public class LinhaDTO {
         this.idLinha = idLinha;
     }
 
-    public String getNome() {
-        return nome;
+    public int getFkCategoria() {
+        return fkCategoria;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setFkCategoria(int fkCategoria) {
+        this.fkCategoria = fkCategoria;
     }
 
-    public int getCategoria() {
-        return categoria;
+    public String getNomeLinha() {
+        return nomeLinha;
     }
 
-    public void setCategoria(int categoria) {
-        this.categoria = categoria;
+    public void setNomeLinha(String nomeLinha) {
+        this.nomeLinha = nomeLinha;
+    }
+
+    public String getCodigoLinha() {
+        return codigoLinha;
+    }
+
+    public void setCodigoLinha(String codigoLinha) {
+        this.codigoLinha = codigoLinha;
     }
 }

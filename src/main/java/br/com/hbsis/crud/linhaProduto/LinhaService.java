@@ -4,6 +4,7 @@ import br.com.hbsis.crud.categoriaProduto.Categoria;
 import br.com.hbsis.crud.categoriaProduto.CategoriaService;
 import br.com.hbsis.crud.csv.ExportCSV;
 import br.com.hbsis.crud.csv.SaveFile;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,15 +31,35 @@ public class LinhaService {
 
     //salvar
 
-    public LinhaDTO save(LinhaDTO linhaDTO) {
+    public Linha save(LinhaDTO linhaDTO) {
         Linha linha = new Linha();
-        Categoria categoriaEntidade = categoriaService.findEntityById(linhaDTO.getCategoria());
-        linha.setCategoria(categoriaEntidade);
-        linha.setNomeLinha(linhaDTO.getNome());
 
-        linha = this.linhaRepository.save(linha);
+        String codigo = this.codigoLinha(linhaDTO.getCodigoLinha());
+        if (codigo.matches("^(?=.*[A-Z])(?=.*[0-9])[A-Z0-9]+$")){
+            linha.setCategoria(this.categoriaService.findEntityById(linhaDTO.getFkCategoria()));
+            linha.setNomeLinha(linhaDTO.getNomeLinha());
+            linha.setCodigoLinha(codigo);
 
-        return LinhaDTO.of(linha);
+            linha = this.linhaRepository.save(linha);
+
+            return linha;
+        }
+        throw new IllegalArgumentException(String.format("O codigo informado (%s) não contem letras e números.", codigo));
+    }
+
+    //salvar utilizando uma entidade linha
+
+    public Linha save(Linha linha){
+        return this.linhaRepository.save(linha);
+    }
+
+    //verificar codigo da linha e se preciso, reformula-lo
+
+    public String codigoLinha(String codigo){
+        while(codigo.length() < 10){
+            codigo = "0"+codigo;
+        }
+        return codigo.toUpperCase();
     }
 
     //listar
@@ -54,48 +75,40 @@ public class LinhaService {
     }
 
     //listar todas as linhas
-    public List<Linha> listAll(){
+    public List<Linha> listAll() {
         return this.linhaRepository.findAll();
     }
 
     //pegar entidade linha
 
-    public Linha findEntityById(int id){
+    public Linha findEntityById(int id) {
         Optional<Linha> linhaOptional = this.linhaRepository.findById(id);
 
-        if(linhaOptional.isPresent()){
+        if (linhaOptional.isPresent()) {
             return linhaOptional.get();
         }
         throw new IllegalArgumentException(String.format("ID %s não existe", id));
     }
 
-    //find all
-    public List<LinhaDTO> findAll(){
-        List<Linha> linhaList = this.linhaRepository.findAll();
-
-        List<LinhaDTO> linhaDTOS = new ArrayList<>();
-
-        linhaList.forEach(linha -> linhaDTOS.add(LinhaDTO.of(linha)));
-
-        return  linhaDTOS;
-    }
     //alterar
 
-    public LinhaDTO update(LinhaDTO linhaDTO, int id) {
+    public Linha update(LinhaDTO linhaDTO, int id) {
         Optional<Linha> linhaOptional = this.linhaRepository.findById(id);
 
-        if (linhaOptional.isPresent()) {
+        String codigo = this.codigoLinha(linhaDTO.getCodigoLinha());
+
+        if(linhaOptional.isPresent() && codigo.matches("^(?=.*[A-Z])(?=.*[0-9])[A-Z0-9]+$")){
             Linha linhaExistente = linhaOptional.get();
 
-            linhaExistente.setNomeLinha(linhaDTO.getNome());
-            Categoria categoriaEntidade = categoriaService.findEntityById(linhaDTO.getCategoria());
-            linhaExistente.setCategoria(categoriaEntidade);
+            linhaExistente.setCodigoLinha(codigo);
+            linhaExistente.setNomeLinha(linhaDTO.getNomeLinha());
+            linhaExistente.setCategoria(this.categoriaService.findEntityById(linhaDTO.getFkCategoria()));
 
             linhaExistente = this.linhaRepository.save(linhaExistente);
 
-            return LinhaDTO.of(linhaExistente);
+            return linhaExistente;
         }
-        throw new IllegalArgumentException(String.format("ID %s não existe", id));
+        throw new IllegalArgumentException(String.format("A linha informada (id: %s) não existe.", id));
     }
 
     //deletar
@@ -107,22 +120,32 @@ public class LinhaService {
     //exportar csv
     public void exportarCsv(HttpServletResponse response) throws IOException {
 
-        this.exportCSV.exportLinha(response, this.findAll());
-    }
-
-    //import
-    public void importCsv(MultipartFile multipartFile) throws IOException {
-        SaveFile saveFile = new SaveFile();
-        File file = saveFile.save(multipartFile);
+        this.exportCSV.exportLinha(response, this.linhaRepository.findAll());
     }
 
     //verificar se existe
-    public boolean linhaExiste(int id){
+    public boolean linhaExiste(int id) {
         Optional<Linha> linhaOptional = this.linhaRepository.findById(id);
+
+        if (linhaOptional.isPresent()) {
+            return true;
+        }
+        return false;
+    }
+
+    //verificar se a linha existe pelo codigo
+    public boolean linhaExiste(String codigo){
+
+        Optional<Linha> linhaOptional = Optional.ofNullable(this.linhaRepository.findByCodigoLinha(codigo));
 
         if(linhaOptional.isPresent()){
             return true;
         }
         return false;
+    }
+
+    //encontrar entidade pelo codigo
+    public Linha findLinhaByCodigo(String codigo){
+        return this.linhaRepository.findByCodigoLinha(codigo);
     }
 }

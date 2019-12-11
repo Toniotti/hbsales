@@ -2,13 +2,23 @@ package br.com.hbsis.crud.categoriaProduto;
 
 import br.com.hbsis.crud.fornecedor.Fornecedor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CategoriaDTO {
     private int idCategoria;
+    @NotBlank(message = "O nome da categoria não pode estar vazio.")
+    @NotNull(message = "O nome da categoria não pode ser nulo.")
     private String nomeCategoria;
-    private List<Integer> fkFornecedor;
+    @Pattern(regexp = "[\\d]{1,3}", message = "O codigo deve conter somente números e deve conter de 1-3 digitos.")
+    @NotBlank(message = "O codigo não pode estar vazio.")
+    @NotNull(message = "O codigo não pode ser nulo.")
+    private String codigoCategoria;
+    @NotNull(message = "O fornecedor precisa ser informado.")
+    private int fkFornecedor;
 
 
     public CategoriaDTO() {
@@ -19,36 +29,39 @@ public class CategoriaDTO {
         this.nomeCategoria = nomeCategoria;
     }
 
-    public CategoriaDTO(int idCategoria, String nomeCategoria, List<Integer> fkFornecedor) {
+    public CategoriaDTO(int idCategoria, String nomeCategoria, int fkFornecedor) {
         this.idCategoria = idCategoria;
         this.nomeCategoria = nomeCategoria;
         this.fkFornecedor = fkFornecedor;
     }
 
-    public CategoriaDTO(String nomeCategoria, List<Integer> fkFornecedor) {
+    public CategoriaDTO(String nomeCategoria, int fkFornecedor, String codigoCategoria) {
         this.nomeCategoria = nomeCategoria;
         this.fkFornecedor = fkFornecedor;
+        this.codigoCategoria = codigoCategoria;
     }
 
     public static CategoriaDTO of(Categoria categoria) {
-        //pegar id's dos fornecedores da categoria
-        List<Fornecedor> fornecedorList = categoria.getFkFornecedor();
-        List<Integer> idFornecedores = new ArrayList<>();
-
-        idFornecedores.forEach(integer -> {idFornecedores.add(integer);});
-
         return new CategoriaDTO(
                 categoria.getIdCategoria(),
                 categoria.getNomeCategoria(),
-                idFornecedores
+                categoria.getFornecedor().getIdFornecedor()
         );
     }
 
-    public List<Integer> getFkFornecedor() {
+    public String getCodigoCategoria() {
+        return codigoCategoria;
+    }
+
+    public void setCodigoCategoria(String codigoCategoria) {
+        this.codigoCategoria = codigoCategoria;
+    }
+
+    public int getFkFornecedor() {
         return fkFornecedor;
     }
 
-    public void setFkFornecedor(List<Integer> fkFornecedor) {
+    public void setFkFornecedor(int fkFornecedor) {
         this.fkFornecedor = fkFornecedor;
     }
 
