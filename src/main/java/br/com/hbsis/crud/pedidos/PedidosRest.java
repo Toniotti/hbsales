@@ -1,9 +1,13 @@
 package br.com.hbsis.crud.pedidos;
 
+import br.com.hbsis.crud.csv.ExportProdutoFuncionarioFornecedor;
+import br.com.hbsis.crud.produtoPedido.ExportProdutoPeriodo;
 import br.com.hbsis.crud.produtoPedido.ProdutoPedido;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -11,10 +15,14 @@ import java.util.List;
 public class PedidosRest {
 
     private PedidosService pedidosService;
+    private final ExportProdutoFuncionarioFornecedor exportProdutoFuncionarioFornecedor;
+    private final ExportProdutoPeriodo exportProdutoPeriodo;
 
     @Autowired
-    public PedidosRest(PedidosService pedidosService) {
+    public PedidosRest(PedidosService pedidosService, ExportProdutoFuncionarioFornecedor exportProdutoFuncionarioFornecedor, ExportProdutoPeriodo exportProdutoPeriodo) {
         this.pedidosService = pedidosService;
+        this.exportProdutoFuncionarioFornecedor = exportProdutoFuncionarioFornecedor;
+        this.exportProdutoPeriodo = exportProdutoPeriodo;
     }
 
     //salvar
@@ -54,5 +62,22 @@ public class PedidosRest {
         return this.pedidosService.delete(id);
     }
 
+    //retirar pedido
+    @PutMapping("/status/{id}")
+    public String retirarPedido(@PathVariable("id") int idPedido){
+        return this.pedidosService.retirarPedido(idPedido);
+    }
+
+    //exportar produtos vendidos por funcionario por fornecedor
+    @GetMapping("/exportarFuncionarioFornecedor/{idFuncionario}/{idFornecedor}")
+    public void exportarProdutoFuncionarioFornecedor(@PathVariable("idFuncionario") int idFuncionario, @PathVariable("idFornecedor") int idFornecedor, HttpServletResponse response) throws IOException {
+        this.exportProdutoFuncionarioFornecedor.exportar(idFornecedor, idFuncionario, response);
+    }
+
+    //exportar produtos vendidos por periodo por fornecedor
+    @GetMapping("/periodo/{idPeriodo}")
+    public void proutoPeriodo(@PathVariable("idPeriodo") int idPeriodo, HttpServletResponse response) throws IOException {
+        this.exportProdutoPeriodo.exportPeriodoFornecedor(response, idPeriodo);
+    }
 
 }

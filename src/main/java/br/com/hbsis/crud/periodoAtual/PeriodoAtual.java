@@ -24,6 +24,16 @@ public class PeriodoAtual {
     @ManyToOne
     @JoinColumn(name = "fk_fornecedor", unique = true, nullable = false)
     private Fornecedor fkFornecedor;
+    @Column(name = "descricao")
+    private String descricao;
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
 
     public int getQtdProdutoVendido() {
         return qtdProdutoVendido;

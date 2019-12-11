@@ -20,6 +20,16 @@ public class Fornecedor {
     private String telefone;
     @Column(name = "email", unique = false, nullable = false, length = 80)
     private String email;
+    @Column(name = "endereco")
+    private String endereco;
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
 
     public int getIdFornecedor() {
         return idFornecedor;

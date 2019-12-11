@@ -15,4 +15,8 @@ interface ProdutoPedidoRepository extends JpaRepository<ProdutoPedido, Integer> 
     @Query("select idProdutoPedido from ProdutoPedido where fkPedido = ?1")
     List<Integer> findProdutoPedidoByPedido(Pedido pedido);
 
+    //selecionar soma quantidade comprada, de um produto, de varios pedidos
+    @Query("select new br.com.hbsis.crud.produtoPedido.ProdutoQuantidade(fkProduto.nomeProduto, sum(QuantidadeComprada)) from ProdutoPedido pedido where fkPedido IN ?1 group by fkProduto.nomeProduto")
+    List<ProdutoQuantidade> pegarValorProdutos(List<Pedido> pedidos);
+
 }

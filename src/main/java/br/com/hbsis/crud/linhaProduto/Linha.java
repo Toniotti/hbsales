@@ -17,10 +17,8 @@ public class Linha {
     @ManyToOne
     @JoinColumn(name = "fk_categoria")
     private Categoria categoria;
-
-    public String getNomeLinha() {
-        return nomeLinha;
-    }
+    @Column(name = "codigo_linha")
+    private String codigoLinha;
 
     public int getIdLinha() {
         return idLinha;
@@ -30,8 +28,12 @@ public class Linha {
         this.idLinha = idLinha;
     }
 
-    public void setNomeLinha(String nomeProduto) {
-        this.nomeLinha = nomeProduto;
+    public String getNomeLinha() {
+        return nomeLinha;
+    }
+
+    public void setNomeLinha(String nomeLinha) {
+        this.nomeLinha = nomeLinha;
     }
 
     public Categoria getCategoria() {
@@ -40,5 +42,13 @@ public class Linha {
 
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
+    }
+
+    public String getCodigoLinha() {
+        return codigoLinha;
+    }
+
+    public void setCodigoLinha(String codigoLinha) {
+        this.codigoLinha = codigoLinha;
     }
 }

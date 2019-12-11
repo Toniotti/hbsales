@@ -16,4 +16,7 @@ interface PeriodoAtualRepository extends JpaRepository<PeriodoAtual, Integer> {
 
     @Query("select idPeriodoAtual from PeriodoAtual where fkFornecedor = ?1")
     int findPeriodoByFornecedor(Fornecedor fornecedor);
+
+    //pegar todos os periodos por fornecedor
+    List<PeriodoAtual> findByFkFornecedor(Fornecedor fornecedor);
 }

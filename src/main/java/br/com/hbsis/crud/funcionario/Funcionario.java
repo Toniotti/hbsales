@@ -1,6 +1,7 @@
 package br.com.hbsis.crud.funcionario;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "funcionarios")
@@ -14,6 +15,16 @@ public class Funcionario {
     private String nomeFuncionario;
     @Column(name = "email_funcionario", unique = false, nullable = false)
     private String emailFuncionario;
+    @Column(name = "uuid")
+    private String uuid;
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
     public int getIdFuncionario() {
         return idFuncionario;

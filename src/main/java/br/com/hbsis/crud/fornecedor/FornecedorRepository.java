@@ -5,4 +5,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 interface FornecedorRepository extends JpaRepository<Fornecedor, Integer> {
+    //achar o fornecedor pelo cnpj
+    Fornecedor findByCnpj(String cnpj);
+
 }

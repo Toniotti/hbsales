@@ -13,46 +13,45 @@ import java.util.Optional;
 @Service
 public class ProdutoPedidoServices {
     private final ProdutoPedidoRepository produtoPedidoRepository;
-    private final ProdutoService produtoService;
 
-    public ProdutoPedidoServices(ProdutoPedidoRepository produtoPedidoRepository, FuncionarioService funcionarioService, ProdutoService produtoService) {
+    public ProdutoPedidoServices(ProdutoPedidoRepository produtoPedidoRepository) {
         this.produtoPedidoRepository = produtoPedidoRepository;
-        this.produtoService = produtoService;
     }
 
     //pegar produtos por pedido
-    public List<Produto> findByPedido(int idPedido){
+    public List<Produto> findByPedido(int idPedido) {
         return this.produtoPedidoRepository.findProdutosByIdPedido(idPedido);
     }
 
     //delete
-    public void delete(ProdutoPedido produtoPedido){
+    public void delete(ProdutoPedido produtoPedido) {
         this.produtoPedidoRepository.delete(produtoPedido);
     }
 
     //save
-    public void save(Pedido pedido, int produto){
+    public void save(Pedido pedido, Produto produto, int qtdComprada) {
 
         ProdutoPedido produtoPedido = new ProdutoPedido();
         produtoPedido.setFkPedido(pedido);
-        Produto entidadeProduto = this.produtoService.findEntityById(produto);
+        Produto entidadeProduto = produto;
         produtoPedido.setFkProduto(entidadeProduto);
+        produtoPedido.setQuantidadeComprada(qtdComprada);
 
         produtoPedido = this.produtoPedidoRepository.save(produtoPedido);
     }
 
     //find element by id
-    public ProdutoPedido findElementById(int id){
+    public ProdutoPedido findElementById(int id) {
         Optional<ProdutoPedido> produtoPedidoOptional = this.produtoPedidoRepository.findById(id);
 
-        if(produtoPedidoOptional.isPresent()){
+        if (produtoPedidoOptional.isPresent()) {
             return produtoPedidoOptional.get();
         }
         throw new IllegalArgumentException(String.format("O id(%s) do produto pedido informado não existe.", id));
     }
 
     //find produto pedido by pedido
-    public List<ProdutoPedido> findProdutoPedidoByPedido(Pedido pedido){
+    public List<ProdutoPedido> findProdutoPedidoByPedido(Pedido pedido) {
         List<Integer> produtoPedidoByPedido = this.produtoPedidoRepository.findProdutoPedidoByPedido(pedido);
         List<ProdutoPedido> produtoPedidos = new ArrayList<>();
 
@@ -66,19 +65,19 @@ public class ProdutoPedidoServices {
     }
 
     //listar produto pedido por funcionario
-    public List<List<ProdutoPedido>> listByFuncionario(List<Pedido> pedidos){
+    public List<List<ProdutoPedido>> listByFuncionario(List<Pedido> pedidos) {
 
         List<ProdutoPedido> produtoPedidoArray;
 
         List<List<ProdutoPedido>> produtosPedidos = new ArrayList<>();
 
-        for (int i = 0; i < pedidos.size(); i++){
+        for (int i = 0; i < pedidos.size(); i++) {
             produtoPedidoArray = new ArrayList<>();
             List<Integer> idProdutoPedidos = this.produtoPedidoRepository.findProdutoPedidoByPedido(pedidos.get(i));
 
             idProdutoPedidos.forEach(integer -> System.out.println(integer));
 
-            for (int j = 0; j < idProdutoPedidos.size(); j++){
+            for (int j = 0; j < idProdutoPedidos.size(); j++) {
                 produtoPedidoArray.add(this.findElementById(idProdutoPedidos.get(j)));
             }
             produtosPedidos.add(produtoPedidoArray);

@@ -1,8 +1,11 @@
 package br.com.hbsis.crud.linhaProduto;
 
+import br.com.hbsis.crud.csv.ImportLinha;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
@@ -11,9 +14,11 @@ import java.util.List;
 public class LinhaRest {
 
     private final LinhaService linhaService;
+    private final ImportLinha importLinha;
 
-    public LinhaRest(LinhaService linhaService){
+    public LinhaRest(LinhaService linhaService, ImportLinha importLinha){
         this.linhaService = linhaService;
+        this.importLinha = importLinha;
     }
 
     //listar todas
@@ -23,7 +28,7 @@ public class LinhaRest {
     //salvar nova linha
 
     @PostMapping
-    public LinhaDTO save(@RequestBody LinhaDTO linhaDTO){
+    public Linha save(@Valid @RequestBody LinhaDTO linhaDTO){
         return this.linhaService.save(linhaDTO);
     }
 
@@ -37,7 +42,7 @@ public class LinhaRest {
     //alterar linha
 
     @PutMapping("/{id}")
-    public LinhaDTO update(@RequestBody LinhaDTO linhaDTO, @PathVariable("id") int id){
+    public Linha update(@Valid @RequestBody LinhaDTO linhaDTO, @PathVariable("id") int id){
         return this.linhaService.update(linhaDTO, id);
     }
 
@@ -48,9 +53,14 @@ public class LinhaRest {
         this.linhaService.delete(id);
     }
 
-    //exportar csv
+//    exportar csv
     @GetMapping("/export")
     public void exportCsv(HttpServletResponse response) throws IOException {this.linhaService.exportarCsv(response);}
 
+    //import
+    @PostMapping("/import")
+    public List<Linha> importLinha(@RequestParam("file")MultipartFile multipartFile) throws IOException {
+        return this.importLinha.importLinha(multipartFile);
+    }
 
 }

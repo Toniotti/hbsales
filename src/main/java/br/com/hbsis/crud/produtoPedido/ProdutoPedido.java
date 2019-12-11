@@ -19,6 +19,8 @@ public class ProdutoPedido {
     @ManyToOne
     @JoinColumn(name = "fk_pedido")
     private Pedido fkPedido;
+    @Column(name = "quantidade_comprada")
+    private int QuantidadeComprada;
 
     public int getIdProdutoPedido() {
         return idProdutoPedido;
@@ -34,6 +36,14 @@ public class ProdutoPedido {
 
     public void setFkProduto(Produto fkProduto) {
         this.fkProduto = fkProduto;
+    }
+
+    public int getQuantidadeComprada() {
+        return QuantidadeComprada;
+    }
+
+    public void setQuantidadeComprada(int quantidadeComprada) {
+        QuantidadeComprada = quantidadeComprada;
     }
 
     public Pedido getFkPedido() {
