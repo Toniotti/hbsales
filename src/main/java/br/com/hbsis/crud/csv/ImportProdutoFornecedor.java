@@ -91,7 +91,6 @@ public class ImportProdutoFornecedor {
 
                 this.produtoService.save(produto);
             }else if(this.produtoService.produtoExiste(this.produtoService.produtoByCodigo(infos.get(i)[0]).getIdProduto())){
-                System.out.println("eeeee");
                 Produto produto = this.produtoService.produtoByCodigo(infos.get(i)[0]);
                 produto.setCodigoProduto(this.produtoService.codigoProdto(infos.get(i)[0]));
                 produto.setMedidaPeso(infos.get(i)[4].replaceAll("[^A-Z]", ""));

@@ -1,6 +1,7 @@
 package br.com.hbsis.crud.produto;
 
 import br.com.hbsis.crud.linhaProduto.Linha;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -25,6 +26,7 @@ public class Produto {
     private Date validade;
     @ManyToOne
     @JoinColumn(name = "fk_linha")
+    @JsonIgnoreProperties
     private Linha fkLinha;
     @Column(name = "codigo_produto")
     private String codigoProduto;
